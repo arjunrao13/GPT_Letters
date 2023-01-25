@@ -65,7 +65,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Message</h1>
+      <h1>Letter Request</h1>
       <form onSubmit={handleSubmit}>
         <textarea
           value={message}
@@ -73,8 +73,6 @@ function App() {
         />
         <button type="submit">Send</button>
       </form>
-      <h1>Response </h1>
-      <p>{response} </p> 
     </div>
   );
 }
