@@ -6,7 +6,6 @@ let {Document} = require('docxyz');
 const {readFileSync, readFile} = require('fs');
 
 let filename = 'Letter_Template.docx';
-//let doc = new Document(filename);
 
 
 const { OpenAIApi, Configuration } = require("openai");
@@ -40,21 +39,19 @@ app.post('/', async (req, res) => {
         temperature: 0,
       });
     const ressy = (response && response.data && response.data.choices[0].text);
-    //promptHere = promptHere + ressy;
     console.log(ressy);
+
     let doc = new Document(filename);
     doc.add_paragraph(ressy);
     doc.save('Letter_Template_Copy.docx');
-    
-
-    let fileHere;
+      let array =  [];
     readFile('Letter_Template_Copy.docx', (err, data) => {
         if (err) throw err;
-        console.log(typeof data);
-        fileHere = new Blob([data]);
-        console.log( typeof fileHere);
+        array[0] = data;
+        array[1] = ressy;
         res.send(data);
     });
+
     
 }
 );
@@ -62,7 +59,6 @@ app.post('/', async (req, res) => {
 
 
 app.listen(port, () => {
-    console.log(process.env.API_KEY);
     console.log(`Example app listening at http://localhost:${port}/`);
     }
 );
