@@ -27,10 +27,11 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
-
 app.post('/', async (req, res) => {
     const { message } = req.body;
     let promptHere = `${message} `;
+    console.log(promptHere);
+    console.log("Hello World");
     
     const response = await openai.createCompletion({
         model: "text-davinci-003",

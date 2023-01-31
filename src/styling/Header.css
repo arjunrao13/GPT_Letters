@@ -1,0 +1,14 @@
+.Header{
+    background-color: rgba(7, 55, 107, 1);
+    min-height: 5vh;
+    max-height: 8vh;
+    padding: 3vh;
+    margin-bottom: 3vh;
+    margin-top: 0vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: rgb(210, 209, 215);
+  }
