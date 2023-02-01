@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Form from './components/Form';
 import React, { useState } from 'react';
 import './App.css';
+import Footer from './components/Footer';
 //import reCAPTCHA from "react-google-recaptcha"
 
 let { saveAs } = require("file-saver");
@@ -78,6 +79,7 @@ function App() {
         />
         <button type="submit">Submit</button>
       </form>
+      <Footer/>
     </div>
    
 
