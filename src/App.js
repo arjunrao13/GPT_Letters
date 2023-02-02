@@ -4,6 +4,7 @@ import Form from './components/Form';
 import React, { useState } from 'react';
 import './App.css';
 import Footer from './components/Footer';
+import ReCAPTCHA from 'react-google-recaptcha';
 import axios from 'axios';
 import {getHeaders} from 'form-data';
 import { Buffer } from 'buffer';
@@ -24,12 +25,17 @@ function App() {
   const [reasonForLetter, setReasonForLetter] = useState('Insert Reason for Letter');
   const [illness, setIllness] = useState('Insert Illness');
   const [addressedTo, setAddressedTo] = useState('Insert Entity/Person Letter is Addressed To');
+  const [isVerifiedRecaptcha, setVerifiedRecaptcha] = useState(false);
   let prompt = `Construct a letter from ${docName} about ${reasonForLetter} regarding ${illness}
   addressed to ${addressedTo} in a professional manner about a given patient. Write the letter as though it will be sent 
   as is outputted and is from the doctor`;
-
   
 
+  
+  const handleRecaptchaChange = (value) => {
+    setVerifiedRecaptcha(true);
+    console.log(isVerifiedRecaptcha);
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -55,7 +61,7 @@ function App() {
       .catch(err => console.error(err));
   }
 
-  function handleSubmitFile(e)  {
+  const handleSubmitFile = (e) => {
 
     e.preventDefault();
     const file = e.target.files[0];
@@ -77,40 +83,45 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <textarea 
-        rows = "6"
-        value = {docName}
-        onChange = {(e) => setDocName(e.target.value)}
-        />
-        <h1></h1>
-        <textarea
-        rows = "6"
-        value = {reasonForLetter}
-        onChange = {(e) => setReasonForLetter(e.target.value)}
-        />
-        <h1></h1>
+      <div className = "container">
         <textarea 
-        rows = "6"
-        onChange = {(e) => setIllness(e.target.value)}
-        value = {illness}
-        />
-        <h1></h1>
-        <form onSubmit={handleSubmit}>
-        <textarea
           rows = "6"
-          value={addressedTo}
-          onChange={e => setAddressedTo(e.target.value)}
-        />
-        <input 
-
-          type="file"
-          // value = {selectedFile}
-          onChange = {(e) => handleSubmitFile(e)}
-        />
-        <button type="submit">Submit</button>
-        
-      </form>
-      <Footer/>
+          value = {docName}
+          onChange = {(e) => setDocName(e.target.value)}
+          />
+          <h1></h1>
+          <textarea
+          rows = "6"
+          value = {reasonForLetter}
+          onChange = {(e) => setReasonForLetter(e.target.value)}
+          />
+          <h1></h1>
+          <textarea 
+          rows = "6"
+          onChange = {(e) => setIllness(e.target.value)}
+          value = {illness}
+          />
+          <h1></h1>
+          <form onSubmit={handleSubmit}>
+          <textarea
+            rows = "6"
+            value={addressedTo}
+            onChange={e => setAddressedTo(e.target.value)}
+          />
+          <input 
+            type="file"
+            // value = {selectedFile}
+            onChange = {(e) => handleSubmitFile(e)}
+          />
+          <ReCAPTCHA
+            align="center"
+            sitekey="6LevmTEkAAAAAO7GlaE54yfu_aKwk2nRHSGA4SzT"
+            onChange={handleRecaptchaChange}
+            />
+          <button disabled = {!isVerifiedRecaptcha} type="submit">Submit</button>
+        </form>
+      </div>
+      {/* <Footer/> */}
     </div>
    
 

@@ -2,10 +2,12 @@ import React from 'react'
 import '../styling/Footer.css';
 
 
-export default () => {
+const Footer = () => {
   return (
     <footer className="Footer">
     Copyright &copy; {new Date().getFullYear()} Letter Manager
     </footer>
   )
 }
+
+export default Footer
