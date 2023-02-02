@@ -1,11 +1,21 @@
-let {Packer } =  require("docx");
-let { saveAs } = require("file-saver");
+//let {Packer } =  require("docx");
+//let { saveAs } = require("file-saver");
 require('dotenv').config();
-const tester = require('docx');
+//const tester = require('docx');
 let {Document} = require('docxyz');
-const {readFileSync, readFile} = require('fs');
+const {readFile} = require('fs');
+const fs = require('fs');
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage, limit: { fileSize: 10 * 1024 * 1024 } });
 
-let filename = 'Letter_Template.docx';
+
+
+
+let animoTemplate = 'Letter_Template_Animo_Sano.docx';
+let chosenTemplate = 'Letter_Template_Choice.docx';
+let fileName = animoTemplate;
+
 
 
 const { OpenAIApi, Configuration } = require("openai");
@@ -27,8 +37,27 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
+
+
+
+
+app.post('/postFile', upload.single('stuff'), (req, res) => {
+    // do something with the file, e.g. save it to a database or disk
+    fs.writeFile(chosenTemplate, req.file.buffer, err => {
+        if (err) {
+          console.error(err);
+          res.status(500).send('Error saving file to disk.');
+          return;
+        }
+        fileName = chosenTemplate;
+        res.send('File received and saved to disk.');
+      });
+  });
+
+
 app.post('/', async (req, res) => {
     const { message } = req.body;
+    
     let promptHere = `${message} `;
     console.log(promptHere);
     console.log("Hello World");
@@ -42,7 +71,7 @@ app.post('/', async (req, res) => {
     const ressy = (response && response.data && response.data.choices[0].text);
     console.log(ressy);
 
-    let doc = new Document(filename);
+    let doc = new Document(fileName);
     doc.add_paragraph(ressy);
     doc.save('Letter_Template_Copy.docx');
       let array =  [];

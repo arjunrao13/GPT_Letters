@@ -4,6 +4,14 @@ import Form from './components/Form';
 import React, { useState } from 'react';
 import './App.css';
 import Footer from './components/Footer';
+import axios from 'axios';
+import {getHeaders} from 'form-data';
+import { Buffer } from 'buffer';
+const FormData = require('form-data');
+
+
+// Create a new form instance
+
 //import reCAPTCHA from "react-google-recaptcha"
 
 let { saveAs } = require("file-saver");
@@ -12,7 +20,6 @@ let { saveAs } = require("file-saver");
 
 function App() {
 
-  const [message, setMessage] = useState('');
   const [docName, setDocName] = useState('Insert Doctor Name');
   const [reasonForLetter, setReasonForLetter] = useState('Insert Reason for Letter');
   const [illness, setIllness] = useState('Insert Illness');
@@ -20,7 +27,6 @@ function App() {
   let prompt = `Construct a letter from ${docName} about ${reasonForLetter} regarding ${illness}
   addressed to ${addressedTo} in a professional manner about a given patient. Write the letter as though it will be sent 
   as is outputted and is from the doctor`;
-  const [nextPrompt, setNextPrompt] = useState('');
 
   
 
@@ -37,9 +43,10 @@ function App() {
     fetch('http://localhost:3001/', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({message: prompt})
+      body: JSON.stringify({message: prompt}),
+
     })
       .then(res => res.blob())
       .then(blob => {
@@ -47,6 +54,23 @@ function App() {
       })
       .catch(err => console.error(err));
   }
+
+  function handleSubmitFile(e)  {
+
+    e.preventDefault();
+    const file = e.target.files[0];
+
+    const form = new FormData();
+    form.append('stuff', file);
+    fetch('http://localhost:3001/postFile', {
+      method: 'POST',
+      body:form
+    })
+      .then(res => console.log(res))
+      .catch(err => console.error(err));
+
+    }
+  
 
   
 
@@ -77,7 +101,14 @@ function App() {
           value={addressedTo}
           onChange={e => setAddressedTo(e.target.value)}
         />
+        <input 
+
+          type="file"
+          // value = {selectedFile}
+          onChange = {(e) => handleSubmitFile(e)}
+        />
         <button type="submit">Submit</button>
+        
       </form>
       <Footer/>
     </div>
