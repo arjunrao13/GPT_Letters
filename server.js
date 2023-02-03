@@ -14,14 +14,19 @@ const upload = multer({ storage: storage, limit: { fileSize: 10 * 1024 * 1024 } 
 
 let animoTemplate = 'Letter_Template_Animo_Sano.docx';
 let chosenTemplate = 'Letter_Template_Choice.docx';
+let copyFile = 'Letter_Template_Copy.docx';
 let fileName = animoTemplate;
+fs.writeFileSync('Letter_Template_Copy.docx', '', err => {
+  if(err) throw err;
+  console.log('file was cleared');
+});
 
 
 
 const { OpenAIApi, Configuration } = require("openai");
 const configuration = new Configuration({
     organization: process.env.ORG,
-    apiKey: process.env.API_KEY,
+    apiKey: process.env.OPEN_AI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 
@@ -41,7 +46,7 @@ app.use(cors());
 
 
 
-app.post('/postFile', upload.single('stuff'), (req, res) => {
+app.post('/postFile', upload.single('uploadedFile'), (req, res) => {
     // do something with the file, e.g. save it to a database or disk
     fs.writeFile(chosenTemplate, req.file.buffer, err => {
         if (err) {
@@ -60,7 +65,6 @@ app.post('/', async (req, res) => {
     
     let promptHere = `${message} `;
     console.log(promptHere);
-    console.log("Hello World");
     
     const response = await openai.createCompletion({
         model: "text-davinci-003",
@@ -73,14 +77,15 @@ app.post('/', async (req, res) => {
 
     let doc = new Document(fileName);
     doc.add_paragraph(ressy);
-    doc.save('Letter_Template_Copy.docx');
-      let array =  [];
-    readFile('Letter_Template_Copy.docx', (err, data) => {
+    doc.save(copyFile);
+
+    fs.readFile(copyFile, (err, data) => {
         if (err) throw err;
-        array[0] = data;
-        array[1] = ressy;
         res.send(data);
     });
+    
+
+    
 
     
 }

@@ -1,66 +1,73 @@
 .App {
-  text-align: center;
+  text-align: left;
 }
 body{
-  text-align: center;
-  size: 100%;
-  background-color:rgba(55, 191, 237, 0.318);
+  margin-left: 40px;
+  margin-top: 20px;
+  text-align: left;
+  background-color: rgb(247, 250, 255);
 }
 
-container{
-  min-height: 100%;
-  height: 100%;
-}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
 form{
-  align-items: center;
-  justify-content: center;
-  display: block;
+  align-items: left;
+  justify-content: left;
+  display: in-line block;
 
+}
+
+span{
+  text-align: left;
+  font-size: .9em;
+  font-family: "Arial";
+  font-weight: "200";
+  display: block;
+  color: rgba(0, 3, 6, 0.939);
+  padding-bottom: 5px;
+  padding-top: 19px;
+  
+ 
 }
 
 
 input{
-  align-items: center;
-  justify-content: center;
+  align-items: left;
+  align-self: left;
+  margin-left: 10px;
   display: block;
-  margin: 0 auto;
-  margin-top: 10px;
-  padding: 1vh;
-  border-radius: 5px;
-  color: rgb(0, 2, 4);
-  font-size: .9em;
-  font-weight: 500;
+  padding: 3vh;
 }
 
 
 button{
-  align-items: center;
-  justify-content: center;
+  align-items: left;
+  justify-content: left;
+  text-align: center;
   display: block;
-  margin: 0 auto;
-  margin-top: 10px;
+  width: 30%;
+  margin: 0px;
+  margin-top: 15px;
   padding: 1vh;
   background-color: rgba(7, 55, 107, 1);
-  color: rgb(210, 209, 215);
-  border: 1px solid rgb(210, 209, 215);
+  color: rgb(255, 255, 255);
   border-radius: 5px;
+  font-family: "Arial";
   font-size: .9em;
   font-weight: 600;
 }
 textarea{
+  border-radius: 8px;
   width: 30%;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  border-color: #D1D1D1;
+  border-width: 2px;
+  font-family: "Arial";
+  font-size: .9em;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: rgb(7, 55, 107);
-  background-color: rgba(156, 236, 167, 0.385);
+  background-color: rgb(255, 255, 255);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -74,8 +81,8 @@ textarea{
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: left;
+  justify-content: left;
   font-size: calc(10px + 2vmin);
   color: rgb(177, 174, 206);
 }

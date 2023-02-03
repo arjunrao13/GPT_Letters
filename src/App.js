@@ -1,31 +1,27 @@
 
 import Header from './components/Header';
-import Form from './components/Form';
+import Form from './components/Form'; 
 import React, { useState } from 'react';
 import './App.css';
 import Footer from './components/Footer';
 import ReCAPTCHA from 'react-google-recaptcha';
-import axios from 'axios';
-import {getHeaders} from 'form-data';
-import { Buffer } from 'buffer';
 const FormData = require('form-data');
-
-
-// Create a new form instance
-
-//import reCAPTCHA from "react-google-recaptcha"
 
 let { saveAs } = require("file-saver");
 
 
 
 function App() {
+  console.log(process.env.REACT_APP_API_URL);
 
-  const [docName, setDocName] = useState('Insert Doctor Name');
-  const [reasonForLetter, setReasonForLetter] = useState('Insert Reason for Letter');
-  const [illness, setIllness] = useState('Insert Illness');
-  const [addressedTo, setAddressedTo] = useState('Insert Entity/Person Letter is Addressed To');
+  const API_URL = process.env.REACT_APP_API_URL;
+  const numRowsTextBox = "3";
+  const [docName, setDocName] = useState('');
+  const [reasonForLetter, setReasonForLetter] = useState('');
+  const [illness, setIllness] = useState('');
+  const [addressedTo, setAddressedTo] = useState('');
   const [isVerifiedRecaptcha, setVerifiedRecaptcha] = useState(false);
+
   let prompt = `Construct a letter from ${docName} about ${reasonForLetter} regarding ${illness}
   addressed to ${addressedTo} in a professional manner about a given patient. Write the letter as though it will be sent 
   as is outputted and is from the doctor`;
@@ -46,7 +42,7 @@ function App() {
   addressed to ${addressedTo} in a professional manner about a given patient. Write the letter as though it will be sent 
   as is outputted and is from the doctor`;
   console.log(prompt);
-    fetch('http://localhost:3001/', {
+    fetch(`${API_URL}/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -67,8 +63,8 @@ function App() {
     const file = e.target.files[0];
 
     const form = new FormData();
-    form.append('stuff', file);
-    fetch('http://localhost:3001/postFile', {
+    form.append('uploadedFile', file);
+    fetch(`${API_URL}/postFile`, {
       method: 'POST',
       body:form
     })
@@ -84,38 +80,39 @@ function App() {
     <div className="App">
       <Header />
       <div className = "container">
+      <span>Provider Name</span>
         <textarea 
-          rows = "6"
+          rows = {numRowsTextBox}
           value = {docName}
           onChange = {(e) => setDocName(e.target.value)}
           />
-          <h1></h1>
+          <span>Addressed To</span>
           <textarea
-          rows = "6"
+          rows = {numRowsTextBox}
           value = {reasonForLetter}
           onChange = {(e) => setReasonForLetter(e.target.value)}
           />
-          <h1></h1>
+          <span>Reason for Letter</span>
           <textarea 
-          rows = "6"
+          rows = "5"
           onChange = {(e) => setIllness(e.target.value)}
           value = {illness}
           />
-          <h1></h1>
+          <span>Illness</span>
           <form onSubmit={handleSubmit}>
           <textarea
-            rows = "6"
+            rows = "5"
             value={addressedTo}
             onChange={e => setAddressedTo(e.target.value)}
           />
           <input 
             type="file"
-            // value = {selectedFile}
             onChange = {(e) => handleSubmitFile(e)}
           />
           <ReCAPTCHA
-            align="center"
-            sitekey="6LevmTEkAAAAAO7GlaE54yfu_aKwk2nRHSGA4SzT"
+            align="left"
+            width="30"
+            sitekey= {process.env.REACT_APP_RECAPTCHA_SITE_KEY}
             onChange={handleRecaptchaChange}
             />
           <button disabled = {!isVerifiedRecaptcha} type="submit">Submit</button>
